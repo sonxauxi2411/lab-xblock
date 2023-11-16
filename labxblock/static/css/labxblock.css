@@ -113,3 +113,8 @@
 .labxblock_block .feedback_submit_feedback {
     width:100%;
 }
+
+.labfunix_block{
+    display: flex;
+    gap:'20px'
+}

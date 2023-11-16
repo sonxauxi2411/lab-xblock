@@ -1,8 +1,32 @@
 function LabXBlock(runtime, element) {
-    // Function to handle the AJAX request for file upload information
-    function handleFileUpload(data) {
-        const result_lab = data.result_lab;
+
+    let createdInputType = '';
+    const  usageId =element.getAttribute('data-usage-id')
+
+    $.ajax({
+        type: "GET",
+        url: runtime.handlerUrl(element, 'lab'),
+        success: function(data) {
+                // console.log(data)
+               if (data.block_id == usageId){
+                const labElement = $(element).find('.lab');
+                if (labElement.length > 0) {
+                    const inputHtml = `<input type="${data.type}" id="input"/>`;
+                    labElement.append(inputHtml);
+                    createdInputType = data.type;
+                    viewResult(data);
+                }
+
+               }   
+        }
+    });
+
+
+ 
+
+    function viewResult(data) {
         const link = data.url;
+        const result_lab = data.result
         if (link.length > 0) {
             const text = `
                 <div>
@@ -12,38 +36,65 @@ function LabXBlock(runtime, element) {
             $(".form-upload", element).css("display", "none");
             $(".labfunix_block", element).html(text);
         }
+        else if (data.result_student){
+            const text = `
+                <div>
+                    <p>student result: ${data.result_student}</p>
+                    <p>Result: ${result_lab}</p>
+                </div>`;
+            $(".form-upload", element).css("display", "none");
+            $(".labfunix_block", element).html(text);
+        }
     }
 
-    // Initial AJAX request for file upload information
-    $.ajax({
-        type: "GET",
-        url: runtime.handlerUrl(element, 'upload'),
-        success: handleFileUpload
-    });
-
-    // Click event handler for the upload button
-    $("#btn-upload", element).click(function (event) {
+    $('#btn-submit', element).click(function (event){
         event.preventDefault();
-        // Check if a file has been selected
-        const fileInput = $("#fileInput")[0];
-        if (fileInput.files.length === 0) {
-            // Add your logic for handling the case when no file is selected
-            console.log("No file selected");
-            return;
+        if (createdInputType == 'file'){
+            const fileInput = $('#input', element)[0].files[0];
+            if (fileInput) {
+                const formData = new FormData();
+                formData.append("file", fileInput);
+                formData.append('type', 'lab');
+                $.ajax({
+                    type: "POST",
+                    url: runtime.handlerUrl(element, 'upload'),
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: viewResult
+                });
+               
+            } else {
+                console.log('No file selected');
+            }
         }
+        else if (createdInputType == 'text'){
+            const text = $('#input', element).val();
+            const formData = new FormData();
+            formData.append("text", text);
+            formData.append('type', 'lab');
+            $.ajax({
+                type: "POST",
+                url: runtime.handlerUrl(element, 'lab_text'),
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (data){
+                    if (data.result_student){
+                        const result_lab = data.result
+                        const text = `
+                            <div>
+                                <p>student result: ${data.result_student}</p>
+                                <p>Result: ${result_lab}</p>
+                            </div>`;
+                        $(".form-upload", element).css("display", "none");
+                        $(".labfunix_block", element).html(text);
+                    }
+                }
+            });
+        }
+      
+    })
     
-        const formData = new FormData();
-        formData.append("file", fileInput.files[0]);
-        formData.append('type', 'lab');
-        
-        // AJAX request for file upload
-        $.ajax({
-            type: "POST",
-            url: runtime.handlerUrl(element, 'upload'),
-            contentType: false,
-            processData: false,
-            data: formData,
-            success: handleFileUpload
-        });
-    });
+
 }

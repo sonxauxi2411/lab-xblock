@@ -3,4 +3,3 @@ Name: labxblock-xblock
 Version: 0.1
 Summary: labxblock XBlock
 License: UNKNOWN
-Requires-Dist: XBlock

@@ -3,22 +3,12 @@
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
-from xblock.fields import Integer, Scope
+from xblock.fields import Integer, Scope , String
 
 
 class LabXBlock(XBlock):
-    """
-    TO-DO: document what your XBlock does.
-    """
-
-    # Fields are defined on the class.  You can access them in your code as
-    # self.<fieldname>.
-
-    # TO-DO: delete count, and define your own fields.
-    count = Integer(
-        default=0, scope=Scope.user_state,
-        help="A simple counter, to show something happening",
-    )
+   
+ 
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
