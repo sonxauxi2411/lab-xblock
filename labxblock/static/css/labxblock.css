@@ -114,7 +114,254 @@
     width:100%;
 }
 
-.labfunix_block{
+.lab-content{
     display: flex;
-    gap:'20px'
+    gap: 20px;
+    flex-direction: column;
+}
+
+.lab-btn{
+   text-align: end;
+   padding:8px
+}
+.lab-button{
+    padding: 10px 20px;
+    background-color: #0086ff;
+    border-radius: 5px;
+    color: white;
+    
+}
+.text-lab{
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+}
+
+.lab-button:hover{
+    cursor: pointer;
+    background-color: #0B70DF ;
+}
+.ck-editor__editable[role="textbox"] {
+
+    min-height: 200px;
+}
+
+
+
+.result-summary{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    padding:4px;
+    flex-grow: 1;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #5aa447;
+}
+
+.result-summary:hover{
+    cursor: pointer;
+}
+
+.detail-lab-result{
+    align-self: stretch;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding: 4px 12px; 
+    border-radius: 6px;
+    border-left: solid 2px #5aa447;
+    background-color: rgba(90, 164, 71, 0.05);
+}
+
+.result-container{
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* .detail-result-item{
+    padding: 10px 10px 0px;
+
+} */
+
+
+
+/* .detail-lab-result > span:first-child {
+    flex-grow: 1;
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #5aa447;
+  
+  } */
+.detail-title {
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #576f8a;
+    margin-bottom: -18px;
+}
+.block-title-lab{
+    color: black;
+}
+
+
+.none{
+    display: none;
+}
+/* .ck-focused{
+    border: none !important;
+} */
+
+.student-lab{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.student-lab-title{
+    display: flex;
+    justify-content: space-between;
+}
+
+.student-lab-content{
+    padding: 20px;
+    background-color: #f6f6f7    ;
+}
+
+.result-lab{
+    padding-top: 20px;
+}
+
+.result-lab-title{
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 10px;
+
+}
+
+.lab-title-block{
+    display: flex;
+    flex-direction: column;
+}
+
+/* Notification */
+
+.lab-success{
+    align-self: stretch;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #f8fcf7;
+  
+    
+}
+
+#lab-icon-success{
+    color: #5aa447;
+    font-size: 22px;
+}
+
+.text-lab-success{
+
+  flex-grow: 0;
+  font-size: 14px;
+  font-weight: 700;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: #2c3744;
+}
+#lab-notification{
+   padding-bottom: 20px;
+}
+
+/* input file */
+
+.inputfile{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    font-weight: 700;
+    color: white;
+    background-color: #0086ff;
+    display: inline-block;
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 4px;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #0B70DF ;
+}
+
+.info-file-content{
+    display: flex;
+    justify-content: space-between;
+    background-color: #f6f6f7;
+    padding:10px 20px;
+}
+
+.student-file{
+    border: 1px solid #0075b4;
+    padding: 8px 16px;
+    border-radius: 4px;
+
+}
+
+.student-file {
+    text-decoration: none; 
+}
+
+.student-file:hover {
+    text-decoration: none !important;
+}
+
+
+.notify-upload{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    padding-bottom: 20px;
+}
+
+.notify-upload > span:first-child {
+    font-weight: 600;
+}
+
+.notify-upload > span:last-child {
+   font-size: 13px;
+   color: #576f8a;
+   
 }
