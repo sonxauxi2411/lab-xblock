@@ -24,7 +24,7 @@ def package_data(pkg, roots):
 
 setup(
     name='labxblock-xblock',
-    version='0.3',
+    version='0.3.5',
     description='labxblock XBlock',   
     license='UNKNOWN',          
     packages=[
@@ -38,5 +38,5 @@ setup(
             'labxblock = labxblock:LabXBlock',
         ]
     },
-    package_data=package_data("labxblock", ["static", "public"]),
+    package_data=package_data("labxblock", ["static", "public" , "translations"]),
 )
