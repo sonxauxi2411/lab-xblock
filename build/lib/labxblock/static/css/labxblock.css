@@ -378,3 +378,7 @@
     padding: 10px 0px;
     font-weight: 600;
 }
+
+.error-message{
+    color : 'red'
+}

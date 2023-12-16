@@ -5,11 +5,16 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import Integer, Scope , String
 from xblock.core import XBlock
+from django.template import Template, Context
+try:
+    from xblock.utils.resources import ResourceLoader
+except ModuleNotFoundError:  # For backward compatibility with releases older than Quince.
+    from xblockutils.resources import ResourceLoader
+resource_loader = ResourceLoader(__name__)
 
 @XBlock.needs("i18n")
 class LabXBlock(XBlock):
    
- 
     @property
     def _(self):
         i18nServer = self.runtime.service(self, 'i18n')
@@ -26,8 +31,17 @@ class LabXBlock(XBlock):
         The primary view of the LabXBlock, shown to students
         when viewing courses.
         """
-        html = self.resource_string("static/html/labxblock.html")
-        frag = Fragment(html.format(self=self))
+        # html = self.resource_string("templates/html/labxblock.html")
+        
+    
+        # template_str = self.resource_string('templates/labxblock.html')
+        # template = Template(template_str)
+        # rendered_html = template.render(Context(''))
+        frag = Fragment()
+        frag.add_content(resource_loader.render_django_template(
+            'templates/labxblock.html',
+            # i18n_service=self.runtime.service(self, 'i18n')
+        ))
         frag.add_css(self.resource_string("static/css/labxblock.css"))
         frag.add_javascript(self.resource_string("static/js/src/labxblock.js"))
         frag.initialize_js('LabXBlock')

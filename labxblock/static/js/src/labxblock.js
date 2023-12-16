@@ -1,5 +1,48 @@
 function LabXBlock(runtime, element) {
 
+    const translations = {
+        'Upload a Zip file': {
+          'en': 'Upload a Zip file.',
+          'vi': 'Tải file Zip lên',
+        },
+        "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB." :{
+            "en" : "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.",
+            "vi": "Nén (các) tệp dự án của bạn thành mọt tệp zip duy nhất trên máy tính của bạn, giới hạn 500 MB (không nén)"
+        },
+        "Select file" : {
+            "en" : "Select file" ,
+            "vi" : "Chọn file"
+        },
+        "Submission date" : {
+            "en" : "Submission date",
+            "vi" : "Ngày nộp"
+        },
+        "Lab content" : {
+            "en" : "Lab content" ,
+            "vi" : "Nội dung bài lab"
+        },
+        "Reference answers" : {
+            "en" : "Reference answers",
+            "vi" : "Đáp án tham khảo"
+        },
+        "View Lab reference answers" : {
+            "en" : "View Lab reference answers",
+            "vi" : "Xem đáp án tham khảo bài Lab"
+        },
+        "Download submitted lab" : {
+            "en" : "Download submitted lab",
+            "vi" : "Tải xuống bài đã nộp"
+        }
+
+      };
+
+    function trans(word) {
+        const cookieValue = $.cookie('openedx-language-preference');
+    
+        return  translations[word][cookieValue] ? translations[word][cookieValue] : translations[word]['en'] ;
+    }
+
+   
     const  usageId =element.getAttribute('data-usage-id')
 
     $.ajax({
@@ -49,16 +92,18 @@ function LabXBlock(runtime, element) {
                     }
         
                 }else if (data.type == 'file'){
+                    $('.lab-text', element).remove()
+                   
                     // console.log('data', data)
                     if (data.url.length == 0){
                         const inputHtml = ` 
                         <div class='notify-upload'>
-                            <span>Tải file Zip lên</span>
-                            <span> Nén (các) tệp dự án của bạn thành mọt tệp zip duy nhất trên máy tính của bạn, giới hạn 500 MB (không nén) </span>
+                            <span>${trans('Upload a Zip file')}</span>
+                            <span> ${trans('Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.')} </span>
                         </div>
                         <div>
                         <input type="file" name="file" id="file" class="inputfile"  />      
-                        <label for="file">Chọn file</label>
+                        <label for="file">${trans('Select file')}</label>
                         </div>
                             <div id='file-info'></div>
                         `;
@@ -79,6 +124,7 @@ function LabXBlock(runtime, element) {
                                 $(element).find('.lab-btn').css('text-align' , 'start')
 
                                 $('.fa-times' , element).click(function (){
+                                    $('.error-message', element).remove()
                                     $('#file')[0].value = '';
                                     $('.info-file-content', element).remove()
     
@@ -89,20 +135,32 @@ function LabXBlock(runtime, element) {
                                 $(element).find('#btn-lab-submit').click(function (){
                                     const selectedFile = $('#file')[0].files[0];
                                     if (selectedFile) {
-                                        const formData = new FormData();
-                                        formData.append("file", selectedFile);
-                                        formData.append('type', 'lab');
-                                        $.ajax({
-                                            type: "POST",
-                                            url: runtime.handlerUrl(element, 'upload'),
-                                            contentType: false,
-                                            processData: false,
-                                            data: formData,
-                                            success: (data)=>{
-                                                console.log(data)
-                                                viewUpload(data)
-                                            }
-                                        });
+                                        const fileSizeInMB = selectedFile.size / (1024 * 1024)
+                                        const fileType = selectedFile.type;
+                                        if (fileSizeInMB > 5) {
+                                            $('.error-message', element).remove()
+                                            $('#lab').append('<span class="error-message">File size exceeds 5MB limit</span>');
+                                        }else if (fileType !== 'application/zip' ){
+                                            $('.error-message', element).remove()
+                                            $('#lab').append('<span class="error-message">File must be a ZIP file</span>');
+                                        }
+                                        else {
+                                            const formData = new FormData();
+                                            formData.append("file", selectedFile);
+                                            formData.append('type', 'lab');
+                                            $.ajax({
+                                                type: "POST",
+                                                url: runtime.handlerUrl(element, 'upload'),
+                                                contentType: false,
+                                                processData: false,
+                                                data: formData,
+                                                success: (data)=>{
+                                                    $('.error-message', element).remove()
+                                                    viewUpload(data)
+                                                }
+                                            });
+                                           
+                                        }
                                        
                                     } else {
                                         console.log('No file selected');
@@ -135,17 +193,19 @@ function LabXBlock(runtime, element) {
         let month = dateObject.getMonth() + 1; 
         let day = dateObject.getDate();
         let formattedDate = day + '/' + month + '/' + year;
-        let text = `Ngày nộp : ${formattedDate}`
+        let text = `${trans('Submission date')}: ${formattedDate}`
         $('.lab-date-success', element).html(text)
     }
 
     function viewResultText(data){
         viewDateSuccess(data.date)
+        $('.lab-text', element).remove()
+
        const text = `
             <div>
                 <div class='student-lab'>
                     <div class='student-lab-title'>
-                        <span>Nội dung bài lab</span>
+                        <span>${trans('Lab content')}</span>
                         <span  id='student-lab-edit'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
                     </div>
                     <div  class='student-lab-content'>
@@ -153,16 +213,16 @@ function LabXBlock(runtime, element) {
                     </div>
                 </div>
                 <div class='result-lab'>
-                    <span class='result-lab-title'>Đáp án tham khảo</span>
+                    <span class='result-lab-title'>${trans('Reference answers')}</span>
                     <div class='result-container'> 
-                    <span> Xem đáp án tham khảo bài Lab</span>
+                    <span> ${trans('View Lab reference answers')}</span>
                     <details class="detail-lab-result">
                         <summary class='result-summary'>
-                            <span>Đáp án tham khảo</span>
+                            <span>${trans('Reference answers')}</span>
                             <span style='color:black'><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                         </summary>
                         <div >
-                            <span style='padding-bottom:10px; padding-top:5px'>${data.result}</span>
+                            <span style='padding-bottom:10px; padding-top:5px ; font-weight:500; font-size:16px'>${data.result}</span>
                         </div>
                     </details>
                         
@@ -193,12 +253,12 @@ function LabXBlock(runtime, element) {
                         
                         <div class="lab-btn ">
                             <span id='lab-huy'  class="lab-button" >
-                                <span class="text-lab">Huy</span>
+                                <span class="text-lab">Huỷ</span>
                             </span>
                         </div>
                         <div class="lab-btn ">
                             <span id='student-edit-submit'  class="lab-button" >
-                                <span class="text-lab">Chinh sua</span>
+                                <span class="text-lab">Chỉnh sửa</span>
                             </span>
                         </div>
                  </div>
@@ -233,6 +293,8 @@ function LabXBlock(runtime, element) {
     }
 
     function viewUpload (data){
+
+        $('.lab-text', element).remove()
         viewDateSuccess(data.date)
         $('.inputfile').css('display', 'none');
         $('label[for="file"]').css('display', 'none');
@@ -242,17 +304,17 @@ function LabXBlock(runtime, element) {
             <div class='student-lab'>
                 <div >
                     <a class='student-file'  href=${data.url} target='_blank' > 
-                        <span>Tải xuống bài đã nộp </span>
+                        <span>${trans('Download submitted lab')} </span>
                     </a>
                 </div>
             </div>
             <div class='result-lab'>
-                <span class='result-lab-title'>Đáp án tham khảo</span>
+                <span class='result-lab-title' >${trans('Reference answers')}</span>
                 <div class='result-container'> 
-                <span> Xem đáp án tham khảo bài Lab</span>
+                <span> ${trans('View Lab reference answers')}</span>
                 <details class="detail-lab-result">
                     <summary class='result-summary'>
-                        <span>Đáp án tham khảo</span>
+                        <span>${trans('Reference answers')}</span>
                         <span style='color:black'><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     </summary>
                     <div >

@@ -6,6 +6,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 
-#: templates/components/instruction.html
+
 msgid "begin"
 msgstr "bat dau"

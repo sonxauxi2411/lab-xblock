@@ -38,5 +38,5 @@ setup(
             'labxblock = labxblock:LabXBlock',
         ]
     },
-    package_data=package_data("labxblock", ["static", "public" , "translations"]),
+    package_data=package_data("labxblock", ["static", "public" , "templates", "translations"]),
 )
