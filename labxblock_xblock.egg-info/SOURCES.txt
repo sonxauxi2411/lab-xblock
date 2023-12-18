@@ -5,6 +5,8 @@ labxblock/static/README.txt
 labxblock/static/css/labxblock.css
 labxblock/static/html/labxblock.html
 labxblock/static/html/labxblock_edit.html
+labxblock/static/images/Group.svg
+labxblock/static/images/Icon_Check_Circle.svg
 labxblock/static/js/src/labxblock.js
 labxblock/static/js/src/labxblock_edit.js
 labxblock/templates/labxblock.html
