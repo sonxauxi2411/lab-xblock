@@ -228,7 +228,7 @@ function LabXBlock(runtime, element) {
                             <span>${trans('Reference answers')}</span>
                             <span style='color:black'><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                         </summary>
-                        <div >
+                        <div style='padding-bottom:10px' >
                             <span style='padding-bottom:10px; padding-top:5px ; font-weight:500; font-size:16px'>${data.result}</span>
                         </div>
                     </details>
@@ -249,7 +249,6 @@ function LabXBlock(runtime, element) {
         });
 
         $("#student-lab-edit" , element).click(function(){
-            console.log('=========', $('.student-lab-content' , element))
             $('.student-lab-content' , element).addClass('bg-none')
             $("#content-student-lab" , element).addClass('none')
             const labElement = $(element).find('.student-lab-content');
@@ -329,7 +328,7 @@ function LabXBlock(runtime, element) {
                        <span style='color:black'><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                      
                     </summary>
-                    <div style='padding-bottom:6px'>
+                    <div style='padding-bottom:10px'>
                         <span style='padding-bottom:10px; padding-top:5px'>${data.result}</span>
                     </div>
                 </details>
