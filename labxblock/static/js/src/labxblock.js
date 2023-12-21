@@ -266,7 +266,7 @@ function LabXBlock(runtime, element) {
                         </div>
                         <div class="lab-btn ">
                             <span id='student-edit-submit'  class="btn-primary-custom lab-button" >
-                                <span class="text-lab">Chỉnh sửa</span>
+                                <span class="text-lab">Lưu chỉnh sửa</span>
                             </span>
                         </div>
                  </div>
