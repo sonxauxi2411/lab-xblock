@@ -7,7 +7,7 @@ function LabXBlock(runtime, element) {
         },
         "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB." :{
             "en" : "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.",
-            "vi": "Nén (các) tệp dự án của bạn thành mọt tệp zip duy nhất trên máy tính của bạn, giới hạn 500 MB (không nén)"
+            "vi": "Nén (các) tệp dự án của bạn thành một tệp zip duy nhất trên máy tính của bạn, giới hạn 500 MB (không nén)"
         },
         "Select file" : {
             "en" : "Select file" ,
