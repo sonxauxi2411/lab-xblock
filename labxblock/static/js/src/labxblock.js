@@ -1,5 +1,6 @@
 function LabXBlock(runtime, element) {
 
+
     const translations = {
         'Upload a Zip file': {
           'en': 'Upload a Zip file.',
@@ -45,6 +46,17 @@ function LabXBlock(runtime, element) {
    
     const  usageId =element.getAttribute('data-usage-id')
 
+    function lab_grade (){
+
+        $.ajax({
+            type: "POST",
+            url: runtime.handlerUrl(element, 'increment_count'),
+            data: JSON.stringify({"hello": "world"}),
+            success: (data)=>{
+            }
+        });
+    }
+
     $.ajax({
         type: "GET",
         url: runtime.handlerUrl(element, 'lab'),
@@ -78,8 +90,10 @@ function LabXBlock(runtime, element) {
                                         data: formData,
                                         success: (data)=>{
                                             viewResultText(data)
+                                            lab_grade()
                                         }
                                     });
+
                                 }).catch( error => {
                                             console.error( error );
                              } );
@@ -156,6 +170,7 @@ function LabXBlock(runtime, element) {
                                                 data: formData,
                                                 success: (data)=>{
                                                     $('.error-message', element).remove()
+                                                    lab_grade()
                                                     viewUpload(data)
                                                 }
                                             });
@@ -286,6 +301,8 @@ function LabXBlock(runtime, element) {
                     const formData = new FormData();
                     formData.append("text", editorData);
                     formData.append('type', 'lab');
+                   
+                   
                     $.ajax({
                         type: "POST",
                         url: runtime.handlerUrl(element, 'lab_text'),
@@ -293,10 +310,13 @@ function LabXBlock(runtime, element) {
                         processData: false,
                         data: formData,
                         success: (data)=>{
+                          
                             viewResultText(data)
 
                         }
                     });
+
+                  
                 })
             })
         })

@@ -15,6 +15,17 @@ resource_loader = ResourceLoader(__name__)
 @XBlock.needs("i18n")
 class LabXBlock(XBlock):
    
+    icon_class = 'problem'
+    total_score = Integer(
+        default=1,
+        scope=Scope.settings
+    )
+
+    
+    @property
+    def has_score(self):
+        return True
+    
     @property
     def _(self):
         i18nServer = self.runtime.service(self, 'i18n')
@@ -61,17 +72,11 @@ class LabXBlock(XBlock):
     # than one handler, or you may not need any handlers at all.
     @XBlock.json_handler
     def increment_count(self, data, suffix=''):
-        """
-        An example handler, which increments the data.
-        """
-        # Just to show data coming in...
-        assert data['hello'] == 'world'
+        
+        self.runtime.publish(self, "grade", { "value": 1, "max_value": 1})
+       
+        return {"message": 'success'}
 
-        self.count += 1
-        return {"count": self.count}
-
-    # TO-DO: change this to create the scenarios you'd like to see in the
-    # workbench while developing your XBlock.
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
