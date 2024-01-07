@@ -124,6 +124,7 @@ function LabXBlock(runtime, element) {
                         labElement.append(inputHtml);
                         $(element).on('change', '.inputfile', function() {
                             const selectedFile = this.files[0];
+                            // console.log('======upload========', selectedFile)
                             const fileInfoContainer = $('#file-info');
                             if (selectedFile) {
                                 fileInfoContainer.html(`
@@ -148,13 +149,15 @@ function LabXBlock(runtime, element) {
                                 })
                                 $(element).find('#btn-lab-submit').click(function (){
                                     const selectedFile = $('#file')[0].files[0];
+                                    console.log('======selectedFile_submit========', selectedFile)
                                     if (selectedFile) {
                                         const fileSizeInMB = selectedFile.size / (1024 * 1024)
                                         const fileType = selectedFile.type;
                                         if (fileSizeInMB > 5) {
                                             $('.error-message', element).remove()
                                             $('#lab').append('<span class="error-message">File size exceeds 5MB limit</span>');
-                                        }else if (fileType !== 'application/zip' ){
+                                        }else if (fileType !== 'application/zip' && fileType !== 'application/x-zip-compressed'){
+                                            // console.log('=====fileType========', fileType)
                                             $('.error-message', element).remove()
                                             $('#lab').append('<span class="error-message">File must be a ZIP file</span>');
                                         }
@@ -238,15 +241,17 @@ function LabXBlock(runtime, element) {
                     <span class='result-lab-title'>${trans('Reference answers')}</span>
                     <div class='result-container'> 
                     <span> ${trans('View Lab reference answers')}</span>
+                  <div>
                     <details class="detail-lab-result">
                         <summary class='result-summary'>
                             <span>${trans('Reference answers')}</span>
-                            <span style='color:black'><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                           
                         </summary>
                         <div style='padding-bottom:10px' >
                             <span style='padding-bottom:10px; padding-top:5px ; font-weight:500; font-size:16px'>${data.result}</span>
                         </div>
                     </details>
+                  </div>
                         
                     </div>
                 </div>
@@ -254,14 +259,15 @@ function LabXBlock(runtime, element) {
         `
         $(".lab-content", element).html(text);
         $('#lab-notification').removeClass('none');
-        $(element).find('.detail-lab-result').on('toggle', function() {
-            var $iconSpan = $(element).find('.fa-chevron-right');
-            if ($(this).prop('open')) {
-                $iconSpan.hide(); 
-            } else {
-                $iconSpan.show(); 
-            }
-        });
+        
+        // $(element).find('.detail-lab-result').on('toggle', function() {
+        //     var $iconSpan = $(element).find('.fa-chevron-right');
+        //     if ($(this).prop('open')) {
+        //         $iconSpan.hide(); 
+        //     } else {
+        //         $iconSpan.show(); 
+        //     }
+        // });
 
         $("#student-lab-edit" , element).click(function(){
             $('.student-lab-content' , element).addClass('bg-none')
@@ -342,16 +348,18 @@ function LabXBlock(runtime, element) {
                 <span class='result-lab-title' >${trans('Reference answers')}</span>
                 <div class='result-container'> 
                 <span> ${trans('View Lab reference answers')}</span>
-                <details class="detail-lab-result">
-                    <summary class='result-summary'>
-                       <span>${trans('Reference answers')}</span>
-                       <span style='color:black'><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                     
-                    </summary>
-                    <div style='padding-bottom:10px'>
-                        <span style='padding-bottom:10px; padding-top:5px'>${data.result}</span>
-                    </div>
-                </details>
+                <div>
+                    <details class="detail-lab-result">
+                        <summary class='result-summary'>
+                        <span>${trans('Reference answers')}</span>
+                        
+                        
+                        </summary>
+                        <div style='padding-bottom:10px'>
+                            <span style='padding-bottom:10px; padding-top:5px'>${data.result}</span>
+                        </div>
+                    </details>
+                </div>
                     
                 </div>
             </div>
@@ -360,14 +368,14 @@ function LabXBlock(runtime, element) {
     $(".lab-content", element).html(text);
     $('#lab-notification').removeClass('none');
 
-    $(element).find('.detail-lab-result').on('toggle', function() {
-        var $iconSpan = $(element).find('.fa-chevron-right');
-        if ($(this).prop('open')) {
-            $iconSpan.hide(); 
-        } else {
-            $iconSpan.show(); 
-        }
-    })
+    // $(element).find('.detail-lab-result').on('toggle', function() {
+    //     var $iconSpan = $(element).find('.fa-chevron-right');
+    //     if ($(this).prop('open')) {
+    //         $iconSpan.hide(); 
+    //     } else {
+    //         $iconSpan.show(); 
+    //     }
+    // })
     }
 
 
