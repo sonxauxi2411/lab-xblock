@@ -66,60 +66,6 @@ function LabXBlock(runtime, element) {
       success: (data) => {},
     });
   }
-  function collapse_fix() {
-    const summaries = Array.from(document.querySelectorAll("summary"));
-
-    summaries.forEach((summary) => {
-      summary.onmouseenter = () => {
-        if (
-          summary.parentElement.style.maxHeight === "none" ||
-          !summary.parentElement.style.maxHeight
-        ) {
-          summary.parentElement.style.maxHeight =
-            summary.parentElement.scrollHeight + "px";
-        }
-      };
-
-      summary.onclick = () => {
-        const details = summary.parentElement;
-        const closeHeight = summary.scrollHeight;
-        let willOpen = !details.open;
-
-        let openHeight;
-
-        if (willOpen) {
-          details.open = true;
-          openHeight = details.scrollHeight;
-          details.open = false;
-        } else {
-          openHeight = details.scrollHeight;
-        }
-
-        details.style.height = openHeight + "px";
-
-        // const offsetHeight = willOpen
-        //   ? openHeight - closeHeight
-        //   : closeHeight - openHeight;
-
-        if (willOpen) {
-          details.style.maxHeight = openHeight + "px";
-        } else {
-          details.style.maxHeight = closeHeight + "px";
-        }
-
-        setTimeout(() => {
-          const msgData = {
-            resize: {
-              iframeHeight: $("#content").prop("scrollHeight"),
-              transition: "0s",
-            },
-            type: "unit.resize",
-          };
-          window.parent.postMessage(msgData, "*");
-        }, 10);
-      };
-    });
-  }
 
   $.ajax({
     type: "GET",
@@ -439,11 +385,7 @@ function LabXBlock(runtime, element) {
     $(".lab-content", element).html(text);
     $("#lab-notification").removeClass("none");
 
-    $(element)
-      .find(".detail-lab-result")
-      .on("toggle", function () {
-        collapse_fix();
-      });
+
 
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');
