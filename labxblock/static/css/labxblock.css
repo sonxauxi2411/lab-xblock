@@ -151,7 +151,6 @@
     list-style: none;
     display: flex;
     justify-content: space-between;
-    padding:4px;
     flex-grow: 1;
     font-weight: 600;
     font-stretch: normal;
