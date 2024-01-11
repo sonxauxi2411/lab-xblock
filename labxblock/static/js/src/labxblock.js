@@ -319,13 +319,6 @@ function LabXBlock(runtime, element) {
     $(".lab-content", element).html(text);
     $("#lab-notification").removeClass("none");
     
-    $(element)
-    .find(".detail-lab-result")
-    .on("toggle", function () {
-      collapse_fix();
-    });
-
-
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');
     //     if ($(this).prop('open')) {
