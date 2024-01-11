@@ -1,231 +1,288 @@
 function LabXBlock(runtime, element) {
+  const translations = {
+    "Upload a Zip file": {
+      en: "Upload a Zip file.",
+      vi: "Tải file Zip lên",
+    },
+    "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.":
+      {
+        en: "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.",
+        vi: "Nén (các) tệp dự án của bạn thành một tệp zip duy nhất trên máy tính của bạn, giới hạn 500 MB (không nén)",
+      },
+    "Select file": {
+      en: "Select file",
+      vi: "Chọn file",
+    },
+    "Submission date": {
+      en: "Submission date",
+      vi: "Ngày nộp",
+    },
+    "Lab content": {
+      en: "Lab content",
+      vi: "Nội dung bài lab",
+    },
+    "Reference answers": {
+      en: "Reference answers",
+      vi: "Đáp án tham khảo",
+    },
+    "View Lab reference answers": {
+      en: "View Lab reference answers",
+      vi: "Xem đáp án tham khảo bài Lab",
+    },
+    "Download submitted lab": {
+      en: "Download submitted lab",
+      vi: "Tải xuống bài đã nộp",
+    },
+  };
 
+  function trans(word) {
+    const cookieValue = $.cookie("openedx-language-preference");
 
-    const translations = {
-        'Upload a Zip file': {
-          'en': 'Upload a Zip file.',
-          'vi': 'Tải file Zip lên',
-        },
-        "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB." :{
-            "en" : "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.",
-            "vi": "Nén (các) tệp dự án của bạn thành một tệp zip duy nhất trên máy tính của bạn, giới hạn 500 MB (không nén)"
-        },
-        "Select file" : {
-            "en" : "Select file" ,
-            "vi" : "Chọn file"
-        },
-        "Submission date" : {
-            "en" : "Submission date",
-            "vi" : "Ngày nộp"
-        },
-        "Lab content" : {
-            "en" : "Lab content" ,
-            "vi" : "Nội dung bài lab"
-        },
-        "Reference answers" : {
-            "en" : "Reference answers",
-            "vi" : "Đáp án tham khảo"
-        },
-        "View Lab reference answers" : {
-            "en" : "View Lab reference answers",
-            "vi" : "Xem đáp án tham khảo bài Lab"
-        },
-        "Download submitted lab" : {
-            "en" : "Download submitted lab",
-            "vi" : "Tải xuống bài đã nộp"
+    return translations[word][cookieValue]
+      ? translations[word][cookieValue]
+      : translations[word]["en"];
+  }
+
+  const usageId = element.getAttribute("data-usage-id");
+
+  function lab_grade() {
+    $.ajax({
+      type: "POST",
+      url: runtime.handlerUrl(element, "increment_count"),
+      data: JSON.stringify({ hello: "world" }),
+      success: (data) => {},
+    });
+  }
+  function collapse_fix() {
+    const summaries = Array.from(document.querySelectorAll("summary"));
+
+    summaries.forEach((summary) => {
+      summary.onmouseenter = () => {
+        if (
+          summary.parentElement.style.maxHeight === "none" ||
+          !summary.parentElement.style.maxHeight
+        ) {
+          summary.parentElement.style.maxHeight =
+            summary.parentElement.scrollHeight + "px";
         }
-
       };
 
-    function trans(word) {
-        const cookieValue = $.cookie('openedx-language-preference');
-    
-        return  translations[word][cookieValue] ? translations[word][cookieValue] : translations[word]['en'] ;
-    }
+      summary.onclick = () => {
+        const details = summary.parentElement;
+        const closeHeight = summary.scrollHeight;
+        let willOpen = !details.open;
 
-   
-    const  usageId =element.getAttribute('data-usage-id')
+        let openHeight;
 
-    function lab_grade (){
+        if (willOpen) {
+          details.open = true;
+          openHeight = details.scrollHeight;
+          details.open = false;
+        } else {
+          openHeight = details.scrollHeight;
+        }
 
-        $.ajax({
-            type: "POST",
-            url: runtime.handlerUrl(element, 'increment_count'),
-            data: JSON.stringify({"hello": "world"}),
-            success: (data)=>{
-            }
-        });
-    }
+        details.style.height = openHeight + "px";
 
-    $.ajax({
-        type: "GET",
-        url: runtime.handlerUrl(element, 'lab'),
-        success: function(data) {
-               if (data.block_id == usageId){
-                const labElement = $(element).find('#lab');
-                if (data.type === 'text'){
-                    if ( !data.result_student){
-                        const btnLabText = $(element).find('#btn-lab-text');
-                        const btnSubmit = $(element).find('#btn-lab-submit')
-                        btnLabText.removeClass('none')
-                        
-                        $('#btn-lab-text', element).click(function (event){
-                            btnSubmit.removeClass('none')
-                            let newDiv = `
-                            <div id='editor'></div>`
-                            labElement.append(newDiv);
-                             ClassicEditor
-                            .create( element.querySelector( '#editor' ) ).then(editor =>{
-                                btnLabText.addClass('none')
-                                btnSubmit.click(function (event){
-                                    const editorData = editor.getData();
-                                    const formData = new FormData();
-                                    formData.append("text", editorData);
-                                    formData.append('type', 'lab');
-                                    $.ajax({
-                                        type: "POST",
-                                        url: runtime.handlerUrl(element, 'lab_text'),
-                                        contentType: false,
-                                        processData: false,
-                                        data: formData,
-                                        success: (data)=>{
-                                            viewResultText(data)
-                                            lab_grade()
-                                        }
-                                    });
+        //   ? openHeight - closeHeight
+        const offsetHeight = willOpen
+          ? openHeight - closeHeight
+          : closeHeight - openHeight;
 
-                                }).catch( error => {
-                                            console.error( error );
-                             } );
-                            })})
-                    }else {
-                        viewResultText(data)
-                       
+        if (willOpen) {
+          details.style.maxHeight = openHeight + "px";
+        } else {
+          details.style.maxHeight = closeHeight + "px";
+        }
+        const content = $("#content").prop("scrollHeight");
+        console.log(content);
+        console.log(offsetHeight);
 
-                        
-                    }
-        
-                }else if (data.type == 'file'){
-                    $('.lab-text', element).remove()
-                   
-                    // console.log('data', data)
-                    if (data.url.length == 0){
-                        const inputHtml = ` 
+        setTimeout(() => {
+          const msgData = {
+            resize: {
+              iframeHeight: $("#content").prop("scrollHeight"),
+              transition: "0s",
+            },
+            type: "unit.resize",
+          };
+          window.parent.postMessage(msgData, "*");
+        }, 10);
+      };
+    });
+  }
+
+  $.ajax({
+    type: "GET",
+    url: runtime.handlerUrl(element, "lab"),
+    success: function (data) {
+      if (data.block_id == usageId) {
+        const labElement = $(element).find("#lab");
+        if (data.type === "text") {
+          if (!data.result_student) {
+            const btnLabText = $(element).find("#btn-lab-text");
+            const btnSubmit = $(element).find("#btn-lab-submit");
+            btnLabText.removeClass("none");
+
+            $("#btn-lab-text", element).click(function (event) {
+              btnSubmit.removeClass("none");
+              let newDiv = `
+                            <div id='editor'></div>`;
+              labElement.append(newDiv);
+              ClassicEditor.create(element.querySelector("#editor")).then(
+                (editor) => {
+                  btnLabText.addClass("none");
+                  btnSubmit
+                    .click(function (event) {
+                      const editorData = editor.getData();
+                      const formData = new FormData();
+                      formData.append("text", editorData);
+                      formData.append("type", "lab");
+                      $.ajax({
+                        type: "POST",
+                        url: runtime.handlerUrl(element, "lab_text"),
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: (data) => {
+                          viewResultText(data);
+                          lab_grade();
+                        },
+                      });
+                    })
+                    .catch((error) => {
+                      console.error(error);
+                    });
+                }
+              );
+            });
+          } else {
+            viewResultText(data);
+          }
+        } else if (data.type == "file") {
+          $(".lab-text", element).remove();
+
+          // console.log('data', data)
+          if (data.url.length == 0) {
+            const inputHtml = ` 
                         <div class='notify-upload'>
-                            <span>${trans('Upload a Zip file')}</span>
-                            <span> ${trans('Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.')} </span>
+                            <span>${trans("Upload a Zip file")}</span>
+                            <span> ${trans(
+                              "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB."
+                            )} </span>
                         </div>
                         <div>
                         <input type="file" name="file" id="file" class="inputfile"  />      
-                        <label class='btn-primary-custom ' for="file"><span>${trans('Select file')}</span></label>
+                        <label class='btn-primary-custom ' for="file"><span>${trans(
+                          "Select file"
+                        )}</span></label>
                         </div>
                             <div id='file-info'></div>
                         `;
-                        labElement.append(inputHtml);
-                        $(element).on('change', '.inputfile', function() {
-                            const selectedFile = this.files[0];
-                            // console.log('======upload========', selectedFile)
-                            const fileInfoContainer = $('#file-info');
-                            if (selectedFile) {
-                                fileInfoContainer.html(`
+            labElement.append(inputHtml);
+            $(element).on("change", ".inputfile", function () {
+              const selectedFile = this.files[0];
+              // console.log('======upload========', selectedFile)
+              const fileInfoContainer = $("#file-info");
+              if (selectedFile) {
+                fileInfoContainer.html(`
                                    <div class='info-file-content'>
                                     <span><i class="fa fa-file-text" aria-hidden="true"></i> ${selectedFile.name}</span>
                                     <span><i class="fa fa-times" aria-hidden="true"></i></span>
                                    </div>
                                 `);
-                                $('.inputfile').css('display', 'none');
-                                $('label[for="file"]').css('display', 'none');
-                                $(element).find('#btn-lab-submit').removeClass('none')
-                                $(element).find('.lab-btn').css('text-align' , 'start')
+                $(".inputfile").css("display", "none");
+                $('label[for="file"]').css("display", "none");
+                $(element).find("#btn-lab-submit").removeClass("none");
+                $(element).find(".lab-btn").css("text-align", "start");
 
-                                $('.fa-times' , element).click(function (){
-                                    $('.error-message', element).remove()
-                                    $('#file')[0].value = '';
-                                    $('.info-file-content', element).remove()
-    
-                                    $('.inputfile').css('display', 'inline-block');
-                                    $('label[for="file"]').css('display', 'inline-block');
-                                    $(element).find('#btn-lab-submit').addClass('none')
-                                })
-                                $(element).find('#btn-lab-submit').click(function (){
-                                    const selectedFile = $('#file')[0].files[0];
-                                    console.log('======selectedFile_submit========', selectedFile)
-                                    if (selectedFile) {
-                                        const fileSizeInMB = selectedFile.size / (1024 * 1024)
-                                        const fileType = selectedFile.type;
-                                        if (fileSizeInMB > 5) {
-                                            $('.error-message', element).remove()
-                                            $('#lab').append('<span class="error-message">File size exceeds 5MB limit</span>');
-                                        }else if (fileType !== 'application/zip' && fileType !== 'application/x-zip-compressed'){
-                                            // console.log('=====fileType========', fileType)
-                                            $('.error-message', element).remove()
-                                            $('#lab').append('<span class="error-message">File must be a ZIP file</span>');
-                                        }
-                                        else {
-                                            const formData = new FormData();
-                                            formData.append("file", selectedFile);
-                                            formData.append('type', 'lab');
-                                            $.ajax({
-                                                type: "POST",
-                                                url: runtime.handlerUrl(element, 'upload'),
-                                                contentType: false,
-                                                processData: false,
-                                                data: formData,
-                                                success: (data)=>{
-                                                    $('.error-message', element).remove()
-                                                    lab_grade()
-                                                    viewUpload(data)
-                                                }
-                                            });
-                                           
-                                        }
-                                       
-                                    } else {
-                                        console.log('No file selected');
-                                    }
-                                })
-    
-                            } else {
-                                fileInfoContainer.html('<p>Không có file được chọn.</p>');
-    
-                            }
+                $(".fa-times", element).click(function () {
+                  $(".error-message", element).remove();
+                  $("#file")[0].value = "";
+                  $(".info-file-content", element).remove();
+
+                  $(".inputfile").css("display", "inline-block");
+                  $('label[for="file"]').css("display", "inline-block");
+                  $(element).find("#btn-lab-submit").addClass("none");
+                });
+                $(element)
+                  .find("#btn-lab-submit")
+                  .click(function () {
+                    const selectedFile = $("#file")[0].files[0];
+                    console.log(
+                      "======selectedFile_submit========",
+                      selectedFile
+                    );
+                    if (selectedFile) {
+                      const fileSizeInMB = selectedFile.size / (1024 * 1024);
+                      const fileType = selectedFile.type;
+                      if (fileSizeInMB > 5) {
+                        $(".error-message", element).remove();
+                        $("#lab").append(
+                          '<span class="error-message">File size exceeds 5MB limit</span>'
+                        );
+                      } else if (
+                        fileType !== "application/zip" &&
+                        fileType !== "application/x-zip-compressed"
+                      ) {
+                        // console.log('=====fileType========', fileType)
+                        $(".error-message", element).remove();
+                        $("#lab").append(
+                          '<span class="error-message">File must be a ZIP file</span>'
+                        );
+                      } else {
+                        const formData = new FormData();
+                        formData.append("file", selectedFile);
+                        formData.append("type", "lab");
+                        $.ajax({
+                          type: "POST",
+                          url: runtime.handlerUrl(element, "upload"),
+                          contentType: false,
+                          processData: false,
+                          data: formData,
+                          success: (data) => {
+                            $(".error-message", element).remove();
+                            lab_grade();
+                            viewUpload(data);
+                          },
                         });
-                
-                    }else {
-                        viewUpload(data)
+                      }
+                    } else {
+                      console.log("No file selected");
                     }
-
-
-                }
-             
-
-               }   
+                  });
+              } else {
+                fileInfoContainer.html("<p>Không có file được chọn.</p>");
+              }
+            });
+          } else {
+            viewUpload(data);
+          }
         }
-    });
+      }
+    },
+  });
 
+  function viewDateSuccess(date) {
+    let dateObject = new Date(date);
+    let year = dateObject.getFullYear();
+    let month = dateObject.getMonth() + 1;
+    let day = dateObject.getDate();
+    let formattedDate = day + " tháng " + month + ", " + year;
+    let text = `${trans("Submission date")}: ${formattedDate}`;
+    $(".lab-date-success", element).html(text);
+    $(".lab-date-success", element).addClass("lab-date ");
+  }
 
+  function viewResultText(data) {
+    viewDateSuccess(data.date);
+    $(".lab-text", element).remove();
 
-    function viewDateSuccess(date){
-        let dateObject = new Date(date);
-        let year = dateObject.getFullYear();
-        let month = dateObject.getMonth() + 1; 
-        let day = dateObject.getDate();
-        let formattedDate = day + ' tháng ' + month + ', ' + year;
-        let text = `${trans('Submission date')}: ${formattedDate}`
-        $('.lab-date-success', element).html(text)
-        $('.lab-date-success', element).addClass('lab-date ')
-
-    }
-
-    function viewResultText(data){
-        viewDateSuccess(data.date)
-        $('.lab-text', element).remove()
-
-       const text = `
+    const text = `
             <div>
                 <div class='student-lab'>
                     <div class='student-lab-title'>
-                        <span>${trans('Lab content')}</span>
+                        <span>${trans("Lab content")}</span>
                         <span  id='student-lab-edit'>
                             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8924 0.165122C13.1554 0.0561096 13.4373 0 13.722 0C14.0067 0 14.2886 0.0561096 14.5516 0.165122C14.8145 0.27409 15.0533 0.433781 15.2545 0.635071L15.8647 1.24535C15.8647 1.24533 15.8648 1.24537 15.8647 1.24535C16.0659 1.44652 16.2256 1.68541 16.3345 1.94826C16.4434 2.21114 16.4995 2.4929 16.4995 2.77745C16.4995 3.06199 16.4434 3.34375 16.3345 3.60663C16.2256 3.86943 16.0661 4.10822 15.8649 4.30936C15.8649 4.30942 15.865 4.3093 15.8649 4.30936L9.68843 10.4891C9.28185 10.8957 8.7302 11.1241 8.15586 11.1241H6.06072C5.68201 11.1241 5.375 10.8171 5.375 10.4383V8.35621C5.37503 7.78201 5.60293 7.23125 6.00866 6.82493L12.1892 0.635421C12.3904 0.434016 12.6295 0.274134 12.8924 0.165122ZM13.722 1.37145C13.6176 1.37145 13.5141 1.39204 13.4176 1.43204C13.3211 1.47203 13.2335 1.53064 13.1597 1.60451C13.1596 1.60454 13.1597 1.60449 13.1597 1.60451L6.97913 7.79398C6.97913 7.79398 6.97913 7.79398 6.97913 7.79398C6.83016 7.94317 6.74647 8.14538 6.74645 8.35621C6.74645 8.35619 6.74645 8.35622 6.74645 8.35621V9.75261H8.15586C8.36652 9.75261 8.56912 9.66883 8.71842 9.5196C8.71837 9.51965 8.71846 9.51956 8.71842 9.5196L14.8949 3.33985C14.9688 3.26603 15.0275 3.17819 15.0675 3.08173C15.1074 2.98526 15.128 2.88186 15.128 2.77745C15.128 2.67303 15.1074 2.56964 15.0675 2.47317C15.0275 2.3767 14.9689 2.28905 14.8951 2.21522L14.2847 1.60483C14.2109 1.53092 14.123 1.47205 14.0264 1.43204C13.9299 1.39204 13.8265 1.37145 13.722 1.37145Z" fill="#2C3744"/>
@@ -234,21 +291,27 @@ function LabXBlock(runtime, element) {
                         </span>
                     </div>
                     <div  class='student-lab-content'>
-                        <span id='content-student-lab'> ${data.result_student}</span>
+                        <span id='content-student-lab'> ${
+                          data.result_student
+                        }</span>
                     </div>
                 </div>
                 <div class='result-lab'>
-                    <span class='result-lab-title'>${trans('Reference answers')}</span>
+                    <span class='result-lab-title'>${trans(
+                      "Reference answers"
+                    )}</span>
                     <div class='result-container'> 
-                    <span> ${trans('View Lab reference answers')}</span>
+                    <span> ${trans("View Lab reference answers")}</span>
                   <div>
                     <details class="detail-lab-result">
                         <summary class='result-summary'>
-                            <span>${trans('Reference answers')}</span>
+                            <span>${trans("Reference answers")}</span>
                            
                         </summary>
                         <div style='padding-bottom:10px' >
-                            <span style='padding-bottom:10px; padding-top:5px ; font-weight:500; font-size:16px'>${data.result}</span>
+                            <span style='padding-bottom:10px; padding-top:5px ; font-weight:500; font-size:16px'>${
+                              data.result
+                            }</span>
                         </div>
                     </details>
                   </div>
@@ -256,24 +319,24 @@ function LabXBlock(runtime, element) {
                     </div>
                 </div>
             </div>
-        `
-        $(".lab-content", element).html(text);
-        $('#lab-notification').removeClass('none');
-        
-        // $(element).find('.detail-lab-result').on('toggle', function() {
-        //     var $iconSpan = $(element).find('.fa-chevron-right');
-        //     if ($(this).prop('open')) {
-        //         $iconSpan.hide(); 
-        //     } else {
-        //         $iconSpan.show(); 
-        //     }
-        // });
+        `;
+    $(".lab-content", element).html(text);
+    $("#lab-notification").removeClass("none");
 
-        $("#student-lab-edit" , element).click(function(){
-            $('.student-lab-content' , element).addClass('bg-none')
-            $("#content-student-lab" , element).addClass('none')
-            const labElement = $(element).find('.student-lab-content');
-            let newDiv = `
+    // $(element).find('.detail-lab-result').on('toggle', function() {
+    //     var $iconSpan = $(element).find('.fa-chevron-right');
+    //     if ($(this).prop('open')) {
+    //         $iconSpan.hide();
+    //     } else {
+    //         $iconSpan.show();
+    //     }
+    // });
+
+    $("#student-lab-edit", element).click(function () {
+      $(".student-lab-content", element).addClass("bg-none");
+      $("#content-student-lab", element).addClass("none");
+      const labElement = $(element).find(".student-lab-content");
+      let newDiv = `
             <div id='lab-edit'>
                 <div id='editor'>
                     <span>${data.result_student}</span>
@@ -292,71 +355,70 @@ function LabXBlock(runtime, element) {
                         </div>
                  </div>
             </div>
-            `
-            labElement.append(newDiv);
-             ClassicEditor
-            .create( element.querySelector( '#editor' ) ).then(editor =>{
-                $('#lab-huy', element).click(function(){
-                    $('.student-lab-content' , element).removeClass('bg-none')
-                    $("#content-student-lab" , element).removeClass('none')
-                    $("#lab-edit" , element).remove()
-                })
-                $('#student-edit-submit' , element).click(function(){
-                    $('.student-lab-content' , element).removeClass('bg-none')
-                    const editorData = editor.getData();
-                    const formData = new FormData();
-                    formData.append("text", editorData);
-                    formData.append('type', 'lab');
-                   
-                   
-                    $.ajax({
-                        type: "POST",
-                        url: runtime.handlerUrl(element, 'lab_text'),
-                        contentType: false,
-                        processData: false,
-                        data: formData,
-                        success: (data)=>{
-                          
-                            viewResultText(data)
+            `;
+      labElement.append(newDiv);
+      ClassicEditor.create(element.querySelector("#editor")).then((editor) => {
+        $("#lab-huy", element).click(function () {
+          $(".student-lab-content", element).removeClass("bg-none");
+          $("#content-student-lab", element).removeClass("none");
+          $("#lab-edit", element).remove();
+        });
+        $("#student-edit-submit", element).click(function () {
+          $(".student-lab-content", element).removeClass("bg-none");
+          const editorData = editor.getData();
+          const formData = new FormData();
+          formData.append("text", editorData);
+          formData.append("type", "lab");
 
-                        }
-                    });
+          $.ajax({
+            type: "POST",
+            url: runtime.handlerUrl(element, "lab_text"),
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: (data) => {
+              viewResultText(data);
+            },
+          });
+        });
+      });
+    });
+  }
 
-                  
-                })
-            })
-        })
-    }
-
-    function viewUpload (data){
-
-        $('.lab-text', element).remove()
-        viewDateSuccess(data.date)
-        $('.inputfile').css('display', 'none');
-        $('label[for="file"]').css('display', 'none');
-        $('.notify-upload').css('display', 'none');
-        const text = `
+  function viewUpload(data) {
+    $(".lab-text", element).remove();
+    viewDateSuccess(data.date);
+    $(".inputfile").css("display", "none");
+    $('label[for="file"]').css("display", "none");
+    $(".notify-upload").css("display", "none");
+    const text = `
         <div>
             <div class='student-lab'>
                 <div style='padding:10px 0px;' >
-                    <a class='btn-primary-custom-outline student-file'  href=${data.url} target='_blank' > 
-                        <span>${trans('Download submitted lab')} </span>
+                    <a class='btn-primary-custom-outline student-file'  href=${
+                      data.url
+                    } target='_blank' > 
+                        <span>${trans("Download submitted lab")} </span>
                     </a>
                 </div>
             </div>
             <div class='result-lab'>
-                <span class='result-lab-title' >${trans('Reference answers')}</span>
+                <span class='result-lab-title' >${trans(
+                  "Reference answers"
+                )}</span>
                 <div class='result-container'> 
-                <span> ${trans('View Lab reference answers')}</span>
+                <span> ${trans("View Lab reference answers")}</span>
                 <div>
                     <details class="detail-lab-result">
                         <summary class='result-summary'>
-                        <span>${trans('Reference answers')}</span>
+                        <span>${trans("Reference answers")}</span>
                         
                         
                         </summary>
                         <div style='padding-bottom:10px'>
-                            <span style='padding-bottom:10px; padding-top:5px'>${data.result}</span>
+                            <span style='padding-bottom:10px; padding-top:5px'>${
+                              data.result
+                            }</span>
                         </div>
                     </details>
                 </div>
@@ -364,20 +426,23 @@ function LabXBlock(runtime, element) {
                 </div>
             </div>
         </div>
-    `
+    `;
     $(".lab-content", element).html(text);
-    $('#lab-notification').removeClass('none');
+    $("#lab-notification").removeClass("none");
+
+    $(element)
+      .find(".detail-lab-result")
+      .on("toggle", function () {
+        collapse_fix();
+      });
 
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');
     //     if ($(this).prop('open')) {
-    //         $iconSpan.hide(); 
+    //         $iconSpan.hide();
     //     } else {
-    //         $iconSpan.show(); 
+    //         $iconSpan.show();
     //     }
     // })
-    }
-
-
-
+  }
 }
