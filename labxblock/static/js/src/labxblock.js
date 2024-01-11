@@ -84,19 +84,15 @@ function LabXBlock(runtime, element) {
 
         details.style.height = openHeight + "px";
 
+        // const offsetHeight = willOpen
         //   ? openHeight - closeHeight
-        const offsetHeight = willOpen
-          ? openHeight - closeHeight
-          : closeHeight - openHeight;
+        //   : closeHeight - openHeight;
 
         if (willOpen) {
           details.style.maxHeight = openHeight + "px";
         } else {
           details.style.maxHeight = closeHeight + "px";
         }
-        const content = $("#content").prop("scrollHeight");
-        console.log(content);
-        console.log(offsetHeight);
 
         setTimeout(() => {
           const msgData = {
