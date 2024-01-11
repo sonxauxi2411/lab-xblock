@@ -1,3 +1,16 @@
+const resize_unit_func = `setTimeout(() => {
+  const height = $('#content').prop('scrollHeight')
+  const msgData = {
+    resize: {
+      iframeHeight: height,
+      transition: '0s',
+    },
+    type: 'unit.resize',
+  };
+  window.parent.postMessage(msgData, '*');
+}, 10);`
+
+
 function LabXBlock(runtime, element) {
   const translations = {
     "Upload a Zip file": {
@@ -299,7 +312,7 @@ function LabXBlock(runtime, element) {
                     <div class='result-container'> 
                     <span> ${trans("View Lab reference answers")}</span>
                   <div>
-                    <details class="detail-lab-result">
+                    <details class="detail-lab-result" onclick="${resize_unit_func}">
                         <summary class='result-summary'>
                             <span>${trans("Reference answers")}</span>
                            
@@ -405,7 +418,7 @@ function LabXBlock(runtime, element) {
                 <div class='result-container'> 
                 <span> ${trans("View Lab reference answers")}</span>
                 <div>
-                    <details class="detail-lab-result">
+                    <details class="detail-lab-result" onclick="${resize_unit_func}">
                         <summary class='result-summary'>
                         <span>${trans("Reference answers")}</span>
                         
