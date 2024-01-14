@@ -24,7 +24,7 @@ def package_data(pkg, roots):
 
 setup(
     name='labxblock-xblock',
-    version='0.4.10',
+    version='0.4.12',
     description='labxblock XBlock',   
     license='UNKNOWN',          
     packages=[

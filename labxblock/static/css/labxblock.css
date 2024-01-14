@@ -1,5 +1,9 @@
 /* CSS for LabXBlock */
 
+.labfunix_block{
+    min-height: 240px !important;
+}
+
 .labxblock_block .count {
     font-weight: bold;
 }
