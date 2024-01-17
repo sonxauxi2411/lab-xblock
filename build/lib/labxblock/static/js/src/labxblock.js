@@ -102,7 +102,7 @@ function LabXBlock(runtime, element) {
                             <span> ${trans('Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB.')} </span>
                         </div>
                         <div>
-                        <input type="file" name="file" id="file" class="inputfile"  />      
+                        <input type="file" name="file" id="file" class="inputfile" accept=".zip"  />      
                         <label class='btn-primary-custom ' for="file"><span>${trans('Select file')}</span></label>
                         </div>
                             <div id='file-info'></div>

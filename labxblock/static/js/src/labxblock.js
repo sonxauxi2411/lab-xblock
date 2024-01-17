@@ -127,7 +127,7 @@ function LabXBlock(runtime, element) {
                             )} </span>
                         </div>
                         <div>
-                        <input type="file" name="file" id="file" class="inputfile"  />      
+                        <input type="file" name="file" id="file" class="inputfile" accept=".zip"  />      
                         <label class='btn-primary-custom ' for="file"><span>${trans(
                           "Select file"
                         )}</span></label>
