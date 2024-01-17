@@ -12,6 +12,7 @@ const resize_unit_func = `setTimeout(() => {
 
 
 function LabXBlock(runtime, element) {
+  console.log('=====================lab================')
   const translations = {
     "Upload a Zip file": {
       en: "Upload a Zip file.",
@@ -24,7 +25,7 @@ function LabXBlock(runtime, element) {
       },
     "Select file": {
       en: "Select file",
-      vi: "Chọn file",
+      vi: "Chọn File",
     },
     "Submission date": {
       en: "Submission date",
@@ -122,9 +123,7 @@ function LabXBlock(runtime, element) {
             const inputHtml = ` 
                         <div class='notify-upload'>
                             <span>${trans("Upload a Zip file")}</span>
-                            <span> ${trans(
-                              "Compress your project files into a single uncompressed Zip file on your computer limited to 500 MB."
-                            )} </span>
+                            <span> Hãy sử dụng template đã cung cấp để thực hành bài lab của bạn, sau đó lưu lại bài làm của bạn thành một tệp zip duy nhất, giới hạn 500Mb. Nhấn “Chọn file” và nhấn nút “Gửi bài”. </span>
                         </div>
                         <div>
                         <input type="file" name="file" id="file" class="inputfile" accept=".zip"  />      
