@@ -8,7 +8,6 @@ const resize_unit_func = `setTimeout(() => {
     type: 'unit.resize',
   };
   window.parent.postMessage(msgData, '*');
-<<<<<<< HEAD
 }, 10);`
 
 function resize() {
@@ -24,9 +23,7 @@ function resize() {
     window.parent.postMessage(msgData, '*');
   }, 10);
 }
-=======
-}, 10);`;
->>>>>>> fix/add-icon-lab-reference-answers
+
 
 function LabXBlock(runtime, element) {
   alert('hello')
@@ -332,11 +329,7 @@ function LabXBlock(runtime, element) {
                             </span>
                         </div>
                         <div class="lab-btn ">
-<<<<<<< HEAD
                             <span id='student-edit-submit'  class="btn-primary-custom lab-button"  onclick="${resize_unit_func}">
-=======
-                            <span id='student-edit-submit'  class="btn-primary-custom lab-button"  >
->>>>>>> fix/add-icon-lab-reference-answers
                                 <span class="text-lab">Lưu chỉnh sửa</span>
                             </span>
                         </div>
