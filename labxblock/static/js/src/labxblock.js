@@ -10,6 +10,19 @@ const resize_unit_func = `setTimeout(() => {
   window.parent.postMessage(msgData, '*');
 }, 10);`
 
+function resize() {
+  setTimeout(() => {
+    const height = $('#content').prop('scrollHeight')
+    const msgData = {
+      resize: {
+        iframeHeight: height,
+        transition: '0s',
+      },
+      type: 'unit.resize',
+    };
+    window.parent.postMessage(msgData, '*');
+  }, 10);
+}
 
 function LabXBlock(runtime, element) {
   const translations = {
@@ -102,6 +115,7 @@ function LabXBlock(runtime, element) {
                         success: (data) => {
                           viewResultText(data);
                           lab_grade();
+                          resize()
                         },
                       });
                     })
@@ -113,6 +127,7 @@ function LabXBlock(runtime, element) {
             });
           } else {
             viewResultText(data);
+            resize()
           }
         } else if (data.type == "file") {
           $(".lab-text", element).remove();
@@ -199,6 +214,7 @@ function LabXBlock(runtime, element) {
                             $(".error-message", element).remove();
                             lab_grade();
                             viewUpload(data);
+                            resize()
                           },
                         });
                       }
@@ -212,6 +228,7 @@ function LabXBlock(runtime, element) {
             });
           } else {
             viewUpload(data);
+            resize()
           }
         }
       }
@@ -304,7 +321,7 @@ function LabXBlock(runtime, element) {
                             </span>
                         </div>
                         <div class="lab-btn ">
-                            <span id='student-edit-submit'  class="btn-primary-custom lab-button" >
+                            <span id='student-edit-submit'  class="btn-primary-custom lab-button"  onclick="${resize_unit_func}">
                                 <span class="text-lab">Lưu chỉnh sửa</span>
                             </span>
                         </div>

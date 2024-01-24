@@ -147,6 +147,7 @@
 .ck-editor__editable[role="textbox"] {
 
     min-height: 200px;
+    max-height: 200px;
 }
 
 
@@ -169,9 +170,7 @@
     cursor: pointer;
 }
 
-.icon-result-summary{
-    
-}
+
 
 .detail-lab-result{
     align-self: stretch;

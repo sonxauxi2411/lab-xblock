@@ -19,7 +19,17 @@
         
     </div>
         <div  class="lab-btn  " style='text-align:start'>
-            <span   class="btn-primary-custom lab-button none" id="btn-lab-text">
+            <span   class="btn-primary-custom lab-button none" id="btn-lab-text" onclick="setTimeout(() => {
+                const height = $('#content').prop('scrollHeight')
+                const msgData = {
+                  resize: {
+                    iframeHeight: height,
+                    transition: '0s',
+                  },
+                  type: 'unit.resize',
+                };
+                window.parent.postMessage(msgData, '*');
+              }, 10);">
                 <span class="text-lab">Bắt đầu thực hành</span>
             </span>
         </div>
@@ -28,7 +38,17 @@
     <div class="lab-content">
         <div id="lab"></div>
         <div class="lab-btn ">
-            <span  class="btn-primary-custom  lab-button none " id="btn-lab-submit">
+            <span  class="btn-primary-custom  lab-button none " id="btn-lab-submit" onclick="setTimeout(() => {
+                const height = $('#content').prop('scrollHeight')
+                const msgData = {
+                  resize: {
+                    iframeHeight: height,
+                    transition: '0s',
+                  },
+                  type: 'unit.resize',
+                };
+                window.parent.postMessage(msgData, '*');
+              }, 10);">
                 <span class="text-lab">Nộp bài</span>
             </span>
         </div>
