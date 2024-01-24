@@ -8,10 +8,10 @@ const resize_unit_func = `setTimeout(() => {
     type: 'unit.resize',
   };
   window.parent.postMessage(msgData, '*');
-}, 10);`
-
+}, 10);`;
 
 function LabXBlock(runtime, element) {
+  alert('hello')
   const translations = {
     "Upload a Zip file": {
       en: "Upload a Zip file.",
@@ -258,13 +258,19 @@ function LabXBlock(runtime, element) {
                     <div class='result-container'> 
                     <span> ${trans("View Lab reference answers")}</span>
                   <div>
-                    <details class="detail-lab-result" onclick="${resize_unit_func}">
-                        <summary class='result-summary'>
-                            <span>${trans("Reference answers")}</span>
-                           
+                    
+                    <details onclick="${resize_unit_func}">
+                      
+                      <summary class='result-summary icon-result-summary'>
+                      <div class="detail-lab-result"  >
+                        <span>${trans("Reference answers")}</span>
+                        
+                        </div>
                         </summary>
-                        <div style='padding-bottom:10px' >
-                            <span style='padding-bottom:10px; padding-top:5px ; font-weight:500; font-size:16px'>${
+                        
+
+                        <div class="detail-lab-result margin-summary" >
+                            <span style='padding-bottom:12px; padding-top:12px'>${
                               data.result
                             }</span>
                         </div>
@@ -277,7 +283,7 @@ function LabXBlock(runtime, element) {
         `;
     $(".lab-content", element).html(text);
     $("#lab-notification").removeClass("none");
-    
+
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');
     //     if ($(this).prop('open')) {
@@ -304,7 +310,7 @@ function LabXBlock(runtime, element) {
                             </span>
                         </div>
                         <div class="lab-btn ">
-                            <span id='student-edit-submit'  class="btn-primary-custom lab-button" >
+                            <span id='student-edit-submit'  class="btn-primary-custom lab-button"  >
                                 <span class="text-lab">Lưu chỉnh sửa</span>
                             </span>
                         </div>
@@ -364,14 +370,18 @@ function LabXBlock(runtime, element) {
                 <div class='result-container'> 
                 <span> ${trans("View Lab reference answers")}</span>
                 <div>
-                    <details class="detail-lab-result" onclick="${resize_unit_func}">
-                        <summary class='result-summary'>
+                    <details onclick="${resize_unit_func}">
+                      
+                      <summary class='result-summary icon-result-summary'>
+                      <div class="detail-lab-result"  >
                         <span>${trans("Reference answers")}</span>
                         
-                        
+                        </div>
                         </summary>
-                        <div style='padding-bottom:10px'>
-                            <span style='padding-bottom:10px; padding-top:5px'>${
+                        
+
+                        <div class="detail-lab-result margin-summary" >
+                            <span style='padding-bottom:12px; padding-top:12px'>${
                               data.result
                             }</span>
                         </div>
@@ -384,8 +394,6 @@ function LabXBlock(runtime, element) {
     `;
     $(".lab-content", element).html(text);
     $("#lab-notification").removeClass("none");
-
-
 
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');
