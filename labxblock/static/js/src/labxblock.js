@@ -26,7 +26,6 @@ function resize() {
 
 
 function LabXBlock(runtime, element) {
-  alert('hello')
   const translations = {
     "Upload a Zip file": {
       en: "Upload a Zip file.",
