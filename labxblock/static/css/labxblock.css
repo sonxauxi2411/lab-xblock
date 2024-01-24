@@ -1,7 +1,7 @@
 /* CSS for LabXBlock */
 
 .labfunix_block{
-    min-height: 300px !important;
+    min-height: 350px !important;
 }
 
 .labxblock_block .count {
@@ -154,7 +154,6 @@
 
 .result-summary{
     list-style: none;
-    display: flex;
     justify-content: space-between;
     flex-grow: 1;
     font-weight: 600;
@@ -164,13 +163,27 @@
     letter-spacing: normal;
     text-align: left;
     color: #5aa447;
+    position:relative
 }
-
+.margin-summary{
+    margin-top: 8px;
+}
 .result-summary:hover{
     cursor: pointer;
 }
-
-
+.icon-result-summary::after{
+    position: absolute;
+    display: block;
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid #2c3744;
+    border-bottom: 2px solid #2c3744;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+    transition: .2s;
+}
 
 .detail-lab-result{
     align-self: stretch;
