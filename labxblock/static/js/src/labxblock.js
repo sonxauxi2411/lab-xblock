@@ -10,6 +10,20 @@ const resize_unit_func = `setTimeout(() => {
   window.parent.postMessage(msgData, '*');
 }, 10);`
 
+function resize() {
+  setTimeout(() => {
+    const height = $('#content').prop('scrollHeight')
+    const msgData = {
+      resize: {
+        iframeHeight: height,
+        transition: '0s',
+      },
+      type: 'unit.resize',
+    };
+    window.parent.postMessage(msgData, '*');
+  }, 10);
+}
+
 
 function LabXBlock(runtime, element) {
   console.log('=====================lab================')
@@ -103,6 +117,7 @@ function LabXBlock(runtime, element) {
                         success: (data) => {
                           viewResultText(data);
                           lab_grade();
+                          resize()
                         },
                       });
                     })
@@ -114,6 +129,7 @@ function LabXBlock(runtime, element) {
             });
           } else {
             viewResultText(data);
+            resize()
           }
         } else if (data.type == "file") {
           $(".lab-text", element).remove();
@@ -198,6 +214,7 @@ function LabXBlock(runtime, element) {
                             $(".error-message", element).remove();
                             lab_grade();
                             viewUpload(data);
+                            resize()
                           },
                         });
                       }
@@ -211,6 +228,7 @@ function LabXBlock(runtime, element) {
             });
           } else {
             viewUpload(data);
+            resize()
           }
         }
       }
@@ -257,13 +275,19 @@ function LabXBlock(runtime, element) {
                     <div class='result-container'> 
                     <span> ${trans("View Lab reference answers")}</span>
                   <div>
-                    <details class="detail-lab-result" onclick="${resize_unit_func}">
-                        <summary class='result-summary'>
-                            <span>${trans("Reference answers")}</span>
-                           
+                    
+                    <details onclick="${resize_unit_func}">
+                      
+                      <summary class='result-summary icon-result-summary'>
+                      <div class="detail-lab-result"  >
+                        <span>${trans("Reference answers")}</span>
+                        
+                        </div>
                         </summary>
-                        <div style='padding-bottom:10px' >
-                            <span style='padding-bottom:10px; padding-top:5px ; font-weight:500; font-size:16px'>${
+                        
+
+                        <div class="detail-lab-result margin-summary" >
+                            <span style='padding-bottom:12px; padding-top:12px'>${
                               data.result
                             }</span>
                         </div>
@@ -276,7 +300,7 @@ function LabXBlock(runtime, element) {
         `;
     $(".lab-content", element).html(text);
     $("#lab-notification").removeClass("none");
-    
+
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');
     //     if ($(this).prop('open')) {
@@ -303,7 +327,7 @@ function LabXBlock(runtime, element) {
                             </span>
                         </div>
                         <div class="lab-btn ">
-                            <span id='student-edit-submit'  class="btn-primary-custom lab-button" >
+                            <span id='student-edit-submit'  class="btn-primary-custom lab-button"  onclick="${resize_unit_func}">
                                 <span class="text-lab">Lưu chỉnh sửa</span>
                             </span>
                         </div>
@@ -363,14 +387,18 @@ function LabXBlock(runtime, element) {
                 <div class='result-container'> 
                 <span> ${trans("View Lab reference answers")}</span>
                 <div>
-                    <details class="detail-lab-result" onclick="${resize_unit_func}">
-                        <summary class='result-summary'>
+                    <details onclick="${resize_unit_func}">
+                      
+                      <summary class='result-summary icon-result-summary'>
+                      <div class="detail-lab-result"  >
                         <span>${trans("Reference answers")}</span>
                         
-                        
+                        </div>
                         </summary>
-                        <div style='padding-bottom:10px'>
-                            <span style='padding-bottom:10px; padding-top:5px'>${
+                        
+
+                        <div class="detail-lab-result margin-summary" >
+                            <span style='padding-bottom:12px; padding-top:12px'>${
                               data.result
                             }</span>
                         </div>
@@ -383,8 +411,6 @@ function LabXBlock(runtime, element) {
     `;
     $(".lab-content", element).html(text);
     $("#lab-notification").removeClass("none");
-
-
 
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');
