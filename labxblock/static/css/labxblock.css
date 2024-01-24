@@ -1,7 +1,7 @@
 /* CSS for LabXBlock */
 
 .labfunix_block{
-    min-height: 240px !important;
+    min-height: 300px !important;
 }
 
 .labxblock_block .count {
@@ -167,6 +167,10 @@
 
 .result-summary:hover{
     cursor: pointer;
+}
+
+.icon-result-summary{
+    
 }
 
 .detail-lab-result{
