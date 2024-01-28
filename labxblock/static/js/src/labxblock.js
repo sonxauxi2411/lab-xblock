@@ -7,12 +7,8 @@ const resize_unit_func = `setTimeout(() => {
     },
     type: 'unit.resize',
   };
-  window.parent.postMessage(msgData, '*');
-}, 10);`
-
-const toggle_result_lab = `setTimeout(() => {
-  $('.detail-lab-result-content').toggle();
   $('.icon-result-summary').toggleClass('active_result');
+  $('.detail-lab-result.border-radius-top-left').toggleClass('border-radius-bottom-left');
   window.parent.postMessage(msgData, '*');
 }, 10);`
 
@@ -282,19 +278,22 @@ function LabXBlock(runtime, element) {
 
                 <div class='result-lab'>
                   <span class='result-lab-title'>${trans("Reference answers")}</span>
-                  <span class='result-lab-sub-title'> ${trans("View Lab reference answers")}</span>
+                  
 
                   <div class='result-container'>
-                      <details onclick="${toggle_result_lab}">
+                      <span class='result-lab-sub-title'> ${trans("View Lab reference answers")}</span>
+
+                      <details onclick="${resize_unit_func}">
                         
                         <summary class='result-summary icon-result-summary'>
-                          <div class="detail-lab-result"  >
+                          <div class="detail-lab-result border-radius-top-left border-radius-bottom-left"  >
                             <span class="detail-lab-result-title">${trans("Reference answers")}</span>
-                            <span class="detail-lab-result-content">${data.result}</span>
                           </div>
                         </summary>
 
-                        
+                        <div class="detail-lab-result border-radius-bottom-left detail-lab-result-content-spc" >
+                            <span class="detail-lab-result-content">${data.result}</span>
+                        </div>
                         
                       </details>
                         
@@ -387,20 +386,23 @@ function LabXBlock(runtime, element) {
 
             <div class='result-lab'>
                 <span class='result-lab-title' >${trans("Reference answers")}</span>
-                <span class='result-lab-sub-title'> ${trans("View Lab reference answers")}</span>
+                
                 
                 
                 <div class='result-container'> 
+                  <span class='result-lab-sub-title'> ${trans("View Lab reference answers")}</span>
                 
                   <details onclick="${resize_unit_func}">
                     
                     <summary class='result-summary icon-result-summary'>
-                      <div class="detail-lab-result">
+                      <div class="detail-lab-result border-radius-top-left border-radius-bottom-left">
                         <span class="detail-lab-result-title">${trans("Reference answers")}</span>
-
-                        <span class="detail-lab-result-content" style="display:block">${data.result}</span>
                       </div>
                     </summary>
+
+                    <div class="detail-lab-result border-radius-bottom-left detail-lab-result-content-spc" >
+                      <span class="detail-lab-result-content">${data.result}</span>
+                    </div>
                       
                   </details>
                   
