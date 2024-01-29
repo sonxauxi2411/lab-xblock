@@ -7,6 +7,8 @@ const resize_unit_func = `setTimeout(() => {
     },
     type: 'unit.resize',
   };
+  $('.icon-result-summary').toggleClass('active_result');
+  $('.detail-lab-result.border-radius-top-left').toggleClass('border-radius-bottom-left');
   window.parent.postMessage(msgData, '*');
 }, 10);`
 
@@ -138,7 +140,6 @@ function LabXBlock(runtime, element) {
           if (data.url.length == 0) {
             const inputHtml = ` 
                         <div class='notify-upload'>
-                            <span>${trans("Upload a Zip file")}</span>
                             <span> Hãy sử dụng template đã cung cấp để thực hành bài lab của bạn, sau đó lưu lại bài làm của bạn thành một tệp zip duy nhất, giới hạn 500Mb. Nhấn “Chọn file” và nhấn nút “Gửi bài”. </span>
                         </div>
                         <div>
@@ -157,8 +158,13 @@ function LabXBlock(runtime, element) {
               if (selectedFile) {
                 fileInfoContainer.html(`
                                    <div class='info-file-content'>
-                                    <span><i class="fa fa-file-text" aria-hidden="true"></i> ${selectedFile.name}</span>
-                                    <span><i class="fa fa-times" aria-hidden="true"></i></span>
+                                    <span><i class="fa fa-file-text file_upload_icon" aria-hidden="true"></i> ${selectedFile.name}</span>
+                                    <span style="display: flex;">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 13.4008L7.10005 18.3008C6.91672 18.4841 6.68338 18.5758 6.40005 18.5758C6.11672 18.5758 5.88338 18.4841 5.70005 18.3008C5.51672 18.1174 5.42505 17.8841 5.42505 17.6008C5.42505 17.3174 5.51672 17.0841 5.70005 16.9008L10.6 12.0008L5.70005 7.10078C5.51672 6.91745 5.42505 6.68411 5.42505 6.40078C5.42505 6.11745 5.51672 5.88411 5.70005 5.70078C5.88338 5.51745 6.11672 5.42578 6.40005 5.42578C6.68338 5.42578 6.91672 5.51745 7.10005 5.70078L12 10.6008L16.9 5.70078C17.0834 5.51745 17.3167 5.42578 17.6 5.42578C17.8834 5.42578 18.1167 5.51745 18.3 5.70078C18.4834 5.88411 18.575 6.11745 18.575 6.40078C18.575 6.68411 18.4834 6.91745 18.3 7.10078L13.4 12.0008L18.3 16.9008C18.4834 17.0841 18.575 17.3174 18.575 17.6008C18.575 17.8841 18.4834 18.1174 18.3 18.3008C18.1167 18.4841 17.8834 18.5758 17.6 18.5758C17.3167 18.5758 17.0834 18.4841 16.9 18.3008L12 13.4008Z" fill="#2C3744"/>
+                                      </svg>
+                                    
+                                    </span>
                                    </div>
                                 `);
                 $(".inputfile").css("display", "none");
@@ -262,39 +268,36 @@ function LabXBlock(runtime, element) {
                             </svg>
                         </span>
                     </div>
-                    <div  class='student-lab-content'>
-                        <span id='content-student-lab'> ${
-                          data.result_student
-                        }</span>
-                    </div>
-                </div>
-                <div class='result-lab'>
-                    <span class='result-lab-title'>${trans(
-                      "Reference answers"
-                    )}</span>
-                    <div class='result-container'> 
-                    <span> ${trans("View Lab reference answers")}</span>
-                  <div>
-                    
-                    <details onclick="${resize_unit_func}">
-                      
-                      <summary class='result-summary icon-result-summary'>
-                      <div class="detail-lab-result"  >
-                        <span>${trans("Reference answers")}</span>
-                        
-                        </div>
-                        </summary>
-                        
 
-                        <div class="detail-lab-result margin-summary" >
-                            <span style='padding-bottom:12px; padding-top:12px'>${
-                              data.result
-                            }</span>
-                        </div>
-                    </details>
-                  </div>
-                        
+                    <div class='student-lab-content'>
+                        <span id='content-student-lab'> ${data.result_student}</span>
                     </div>
+
+                </div>
+
+
+                <div class='result-lab'>
+                  <span class='result-lab-title'>${trans("Reference answers")}</span>
+                  
+
+                  <div class='result-container'>
+                      <span class='result-lab-sub-title'> ${trans("View Lab reference answers")}</span>
+
+                      <details onclick="${resize_unit_func}">
+                        
+                        <summary class='result-summary icon-result-summary'>
+                          <div class="detail-lab-result border-radius-top-left border-radius-bottom-left"  >
+                            <span class="detail-lab-result-title">${trans("Reference answers")}</span>
+                          </div>
+                        </summary>
+
+                        <div class="detail-lab-result border-radius-bottom-left detail-lab-result-content-spc" >
+                            <span class="detail-lab-result-content">${data.result}</span>
+                        </div>
+                        
+                      </details>
+                        
+                  </div>
                 </div>
             </div>
         `;
@@ -335,7 +338,7 @@ function LabXBlock(runtime, element) {
             </div>
             `;
       labElement.append(newDiv);
-      ClassicEditor.create(element.querySelector("#editor")).then((editor) => {
+      ClassicEditor.create(element.querySelector("#editor")).then((editor) => { 
         $("#lab-huy", element).click(function () {
           $(".student-lab-content", element).removeClass("bg-none");
           $("#content-student-lab", element).removeClass("none");
@@ -363,7 +366,7 @@ function LabXBlock(runtime, element) {
     });
   }
 
-  function viewUpload(data) {
+  function viewUpload(data) { // UFC - nơi tạo ra nút download submitted lab
     $(".lab-text", element).remove();
     viewDateSuccess(data.date);
     $(".inputfile").css("display", "none");
@@ -371,7 +374,7 @@ function LabXBlock(runtime, element) {
     $(".notify-upload").css("display", "none");
     const text = `
         <div>
-            <div class='student-lab'>
+            <div class='student-lab' style="display:none;">
                 <div style='padding:10px 0px;' >
                     <a class='btn-primary-custom-outline student-file'  href=${
                       data.url
@@ -380,37 +383,51 @@ function LabXBlock(runtime, element) {
                     </a>
                 </div>
             </div>
-            <div class='result-lab'>
-                <span class='result-lab-title' >${trans(
-                  "Reference answers"
-                )}</span>
-                <div class='result-container'> 
-                <span> ${trans("View Lab reference answers")}</span>
-                <div>
-                    <details onclick="${resize_unit_func}">
-                      
-                      <summary class='result-summary icon-result-summary'>
-                      <div class="detail-lab-result"  >
-                        <span>${trans("Reference answers")}</span>
-                        
-                        </div>
-                        </summary>
-                        
 
-                        <div class="detail-lab-result margin-summary" >
-                            <span style='padding-bottom:12px; padding-top:12px'>${
-                              data.result
-                            }</span>
-                        </div>
-                    </details>
-                </div>
+            <div class='result-lab'>
+                <span class='result-lab-title' >${trans("Reference answers")}</span>
+                
+                
+                
+                <div class='result-container'> 
+                  <span class='result-lab-sub-title'> ${trans("View Lab reference answers")}</span>
+                
+                  <details onclick="${resize_unit_func}">
                     
+                    <summary class='result-summary icon-result-summary'>
+                      <div class="detail-lab-result border-radius-top-left border-radius-bottom-left">
+                        <span class="detail-lab-result-title">${trans("Reference answers")}</span>
+                      </div>
+                    </summary>
+
+                    <div class="detail-lab-result border-radius-bottom-left detail-lab-result-content-spc" >
+                      <span class="detail-lab-result-content">${data.result}</span>
+                    </div>
+                      
+                  </details>
+                  
                 </div>
+
+
             </div>
         </div>
     `;
+
+    const download_link = `
+          <a class='' href=${data.url} target='_blank' > 
+              <span>${trans("Download submitted lab")} </span>
+          </a>
+    `;
+  
+
+
+
     $(".lab-content", element).html(text);
     $("#lab-notification").removeClass("none");
+
+    // show download button vetical with notification lab
+    $(".btn_download_submitted_lab", element).html(download_link);
+    
 
     // $(element).find('.detail-lab-result').on('toggle', function() {
     //     var $iconSpan = $(element).find('.fa-chevron-right');

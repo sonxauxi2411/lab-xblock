@@ -2,6 +2,7 @@
 
 .labfunix_block{
     min-height: 350px !important;
+    margin-top: 2rem;
 }
 
 .labxblock_block .count {
@@ -135,9 +136,10 @@
     
 } */
 .text-lab{
+    font-size: 0.875rem;
     size: 13px;
-    line-height: 20px;
-    font-weight: 600;
+    line-height: 1.5;
+    font-weight: 500;
 }
 
 .lab-button:hover{
@@ -185,24 +187,57 @@
     transition: .2s;
 }
 
+.icon-result-summary.active_result::after {
+    display: none;
+}
+
 .detail-lab-result{
-    align-self: stretch;
-    flex-grow: 0;
+    /* align-self: stretch;
+    flex-grow: 0; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    padding: 4px 12px; 
-    border-radius: 6px;
+    padding: 0.75rem 1rem; 
     border-left: solid 2px #5aa447;
     background-color: rgba(90, 164, 71, 0.05);
+    /* border-top-left-radius: 0.375rem; */
+}
+
+.border-radius-top-left{
+    border-top-left-radius: 0.375rem;
+}
+
+.border-radius-bottom-left{
+    border-bottom-left-radius: 0.375rem;
+}
+
+.detail-lab-result-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #5aa447;
+    
+}
+
+.detail-lab-result-content {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #2c3744;
+}
+
+.detail-lab-result-content-spc {
+    padding-top: 0 !important;
 }
 
 .result-container{
-    padding-top: 10px;
+    /* padding-top: 10px; */
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    margin-bottom: 2rem;
+    /* gap: 20px; */
 }
 
 /* .detail-result-item{
@@ -249,50 +284,62 @@
 .student-lab{
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    /* gap: 10px; */
 }
 
 .student-lab-title{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
 }
 
 .student-lab-content{
-    padding: 20px;
-    background-color: #f6f6f7    ;
+    padding: 1rem 1rem 2rem;
+    background-color: #f6f6f7;
+    margin-bottom: 2rem;
+    border-radius: 0.375rem;
 }
 
-.result-lab{
-    padding-top: 30px;
+.result-lab {
+    /* padding-top: 30px; */
 }
 
-.result-lab-title{
-    font-size: 18px;
-    font-weight: 600;
-    padding-bottom: 10px;
+.result-lab-title {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.result-lab-sub-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 1rem;
+    margin-bottom: 1rem;
 
 }
 
 .lab-title-block{
     display: flex;
     flex-direction: column;
-    margin-bottom: 14px;
+    margin-bottom: 0.5rem;
+    /* gap: 0.5rem; */
 }
 
 /* Notification */
 
 .lab-success{
-    align-self: stretch;
-    flex-grow: 0;
+    /* align-self: stretch;
+    flex-grow: 0; */
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 6px;
-    padding: 10px;
-    border-radius: 6px;
-    background-color: #f8fcf7;
-    align-items: flex-start;
+    gap: 0.5rem;
+    /* padding: 0.75rem; */
+    /* border-radius: 0.375rem; */
+    /* background-color: #f8fcf7; */
     
 }
 
@@ -303,9 +350,9 @@
 
 .text-lab-success{
 
-    width: 11.938rem;
-    height: 1.5rem;
-    flex-grow: 0;
+    /* width: 11.938rem;
+    height: 1.5rem; */
+    /* flex-grow: 0; */
     /* font-family: Roboto; */
     font-size: 0.9rem;
     font-weight: 650;
@@ -316,9 +363,40 @@
     text-align: left;
     color: #2c3744;
 }
+
 #lab-notification{
-   padding-bottom: 20px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   background-color: #f8fcf7;
+   padding: 0.75rem;
+   border-radius: 0.375rem;
+   margin-bottom: 2rem;
 }
+
+/* css download at notification block */
+.btn_download_submitted_lab {
+    /* color: #0086ff; */
+    /* line-height: 20px; */
+    /* font-weight: 600; */
+    /* size: 16px; */
+}
+
+.btn_download_submitted_lab a {
+    color: #0086ff;
+    line-height: 150%;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn_download_submitted_lab a:hover {
+    color: #0086ff;
+    line-height: 150%;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
 
 /* input file */
 
@@ -337,7 +415,7 @@
     background-color: #0086ff;
     display: inline-block;
     cursor: pointer;
-    padding: 8px 14px;
+    padding: 0.625rem 1.25rem;
     border-radius: 4px;
 }
 
@@ -349,8 +427,16 @@
 .info-file-content{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: #f6f6f7;
-    padding:10px 20px;
+    padding:0.75rem;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+}
+
+.file_upload_icon {
+    margin-right: 0.5rem;
+    color: #576F8A;
 }
 
 .student-file{
@@ -373,15 +459,15 @@
     display: flex;
     flex-direction: column;
     gap:10px;
-    padding-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
-.notify-upload > span:first-child {
+/* .notify-upload > span:first-child {
     font-weight: 600;
-}
+} */
 
 .notify-upload > span:last-child {
-   font-size: 0.92rem;
+   font-size: 1rem;
    color: #2c3744;
    
 }
@@ -394,11 +480,12 @@
 }
 
 .lab-text{
-    font-size:0.92rem;
-    padding: 10px 0px;
+    font-size: 1rem;
     color: #2c3744;
-    padding-bottom: 10px;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
     line-height: 1.5;
+    font-weight: 400;
 }
 
 .error-message{
@@ -410,7 +497,7 @@
 }
 
 .lab-title-block span:first-of-type {
-    height: 1.875rem;
+  /* height: 1.875rem; */
   align-self: stretch;
   flex-grow: 0;
   /* font-family: Roboto; */
@@ -425,10 +512,9 @@
 }
 
 .lab-date {
-    height: 1.5rem;
+    /* height: 1.5rem; */
     align-self: stretch;
     flex-grow: 0;
- 
     font-size: 1rem;
     font-weight: normal;
     font-stretch: normal;
@@ -437,11 +523,14 @@
     letter-spacing: normal;
     text-align: left;
     color: #2c3744;
-    padding: 10px 0px;
+    /* padding: 10px 0px; */
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
 }
 
 .student-lab-title span:first-of-type{
-    height: 1.5rem;
+    /* UFC - caution */
+    /* height: 1.5rem; */ 
   flex-grow: 1;
   /* font-family: Roboto; */
   font-size: 1rem;
@@ -454,6 +543,12 @@
   color: #2c3744;
 }
 
+#student-lab-edit{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #student-lab-edit:hover{
     cursor: pointer;
 }
@@ -462,15 +557,15 @@
 .btn-primary-custom {
     border: none;
     background-color: #0086ff !important;
-    border-radius: 4px;
-    padding: 8px 20px;
+    border-radius: 0.25rem;
+    padding: 10px 20px;
     color: white;
   }
 
 .btn-primary-custom span {
     size: 13px;
-    line-height: 20px;
-    font-weight: 600;
+    line-height: 1.5;
+    font-weight: 500;
 }
 
 .btn-primary-custom:hover {
